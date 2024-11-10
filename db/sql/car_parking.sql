@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS cars_parkings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id_car INTEGER NOT NULL,
+  price_value FLOAT NOT NULL,
+  interest FLOAT,
+  start_entry_time TIMESTAMP WITH TIME ZONE NOT NULL,
+  end_entry_time TIMESTAMP WITH TIME ZONE NOT NULL,
+  FOREIGN KEY (id_car) REFERENCES cars(id)
+);

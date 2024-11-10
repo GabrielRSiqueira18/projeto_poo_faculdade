@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS cars (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  model VARCHAR(100) NOT NULL,
+  license_plate varchar(6) NOT NULL
+);
