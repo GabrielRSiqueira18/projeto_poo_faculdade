@@ -7,7 +7,11 @@ public class UserSeed {
   public static void seed() {
     UserRepository userRepository = new UserRepository();
 
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 3; i++) {
+      if (i == 2) {
+        userRepository.create(new UserModel(null, "a", "a", "a", false));
+      }
+
       userRepository.create(new UserModel(
         null,
         i == 0 ? "client" : "admin",

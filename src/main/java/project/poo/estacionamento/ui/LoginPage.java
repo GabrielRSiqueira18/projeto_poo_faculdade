@@ -42,7 +42,7 @@ public class LoginPage extends JFrame {
         JOptionPane.showMessageDialog(frame, "Logged in successfully!");
         dispose();
         SwingUtilities.invokeLater(() -> {
-          HomePage homeFrame = new HomePage();
+          HomesPage homeFrame = new HomesPage();
           homeFrame.setVisible(true);
         });
       } catch (RuntimeException ex) {

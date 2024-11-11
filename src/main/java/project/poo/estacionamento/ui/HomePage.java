@@ -1,6 +1,7 @@
 package project.poo.estacionamento.ui;
 
 import project.poo.estacionamento.infra.database.models.CarModel;
+import project.poo.estacionamento.ui.components.Header;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -37,6 +38,14 @@ public class HomePage extends JFrame {
 
     GridBagConstraints gbc = new GridBagConstraints();
 
+
+    // Adiciona o painel de cabeçalho ao layout (posição no topo)
+    gbc.gridx = 0; // Coluna 0
+    gbc.gridy = 0; // Linha 0 (topo)
+    gbc.gridwidth = 2; // Cabeçalho ocupa duas colunas (toda a largura)
+    gbc.fill = GridBagConstraints.HORIZONTAL; // Preenche toda a largura horizontal
+    gbc.insets = new Insets(10, 10, 10, 10); // Margem para dar um espaçamento
+    add(new Header(), gbc);
     // Painel esquerdo
     JPanel leftPanel = new JPanel();
     leftPanel.setBackground(new Color(255, 140, 0));
