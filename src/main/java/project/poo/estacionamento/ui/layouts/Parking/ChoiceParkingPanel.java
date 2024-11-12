@@ -80,11 +80,8 @@ public class ChoiceParkingPanel extends JPanel {
     public void actionPerformed(ActionEvent e) {
 
       if (!isOccupied) {
-        new CreateCarParkingDialog().setVisible(true);
+        new CreateCarParkingDialog(button).setVisible(true);
 
-        if (confirmed) {
-          button.setBackground(Color.GREEN);
-        }
       } else {
         button.setBackground(Color.RED);
         button.setText("Disponível");

@@ -21,7 +21,7 @@ public class CreateCarParkingDialog extends BaseDialog {
   private final JLabel     amountLabel;
   private final double     hourlyRate = 10.0; // Valor por hora
 
-  public CreateCarParkingDialog() {
+  public CreateCarParkingDialog(JButton button) {
     super();
 
     // Define o layout principal como GridBagLayout para centralização
@@ -204,7 +204,8 @@ public class CreateCarParkingDialog extends BaseDialog {
       }
 
       // Se passar todas as validações, a ação é confirmada
-      confirmed = true;
+      button.setBackground(Color.GREEN);
+
       setVisible(false);
     });
 
