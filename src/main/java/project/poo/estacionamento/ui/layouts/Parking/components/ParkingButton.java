@@ -9,7 +9,7 @@ import static project.poo.estacionamento.ui.layouts.Parking.ParkingPanel.parking
 
 public class ParkingButton extends JButton {
   public ParkingButton(int top, int left, int bottom, int right) {
-    super("Código Vaga: " + parkingZoneNumber);
+    super("Código: " + parkingZoneNumber);
     parkingZoneNumber += 1;
     setBackground(Color.gray);
     setOpaque(true);

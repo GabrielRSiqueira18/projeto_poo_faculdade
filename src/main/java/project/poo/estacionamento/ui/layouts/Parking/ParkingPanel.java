@@ -17,7 +17,7 @@ public class ParkingPanel extends JPanel {
 
     for (int i = 0; i < choicesParkingPanel.length; i++) {
       ChoiceParkingPanel panel = new ChoiceParkingPanel();
-      panel.setPreferredSize(new Dimension((768 - 250), 400));
+      panel.setPreferredSize(new Dimension((768 - 250), 350));
       choicesParkingPanel[i] = panel;
     }
 

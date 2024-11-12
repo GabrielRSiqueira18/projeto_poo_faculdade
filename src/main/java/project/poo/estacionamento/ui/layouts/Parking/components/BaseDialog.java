@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class BaseDialog extends JDialog {
   BaseDialog() {
-    setSize(768, 500);
+    setSize(400, 300);
     setResizable(false);
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setLocationRelativeTo(null);
