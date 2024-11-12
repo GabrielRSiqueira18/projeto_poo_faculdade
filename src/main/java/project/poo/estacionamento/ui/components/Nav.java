@@ -72,6 +72,13 @@ public class Nav extends JPanel {
     fineCarButton.setAlignmentX(Component.CENTER_ALIGNMENT);
     viewFinedCarsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+    registerCarButton.setFocusPainted(false);
+    viewCarButton.setFocusPainted(false);
+    updateCarButton.setFocusPainted(false);
+    removeCarButton.setFocusPainted(false);
+    fineCarButton.setFocusPainted(false);
+    viewFinedCarsButton.setFocusPainted(false);
+
     add(registerCarButton);
     add(Box.createVerticalStrut(10));
     add(viewCarButton);
