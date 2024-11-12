@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static project.poo.estacionamento.ui.layouts.Parking.components.CreateCarParkingDialog.confirmed;
+
 public class ChoiceParkingPanel extends JPanel {
   private JButton[][] parkingButtons;
 
@@ -76,13 +78,15 @@ public class ChoiceParkingPanel extends JPanel {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      isOccupied = !isOccupied;
-      if (isOccupied) {
-        new CreateCarParkingDialog().setVisible(true)  ;
-        button.setBackground(Color.red);
-        button.setText("Ocupado");
+
+      if (!isOccupied) {
+        new CreateCarParkingDialog().setVisible(true);
+
+        if (confirmed) {
+          button.setBackground(Color.GREEN);
+        }
       } else {
-        button.setBackground(Color.green);
+        button.setBackground(Color.RED);
         button.setText("Disponível");
       }
     }

@@ -13,6 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class CreateCarParkingDialog extends BaseDialog {
+  public static boolean confirmed = false;
+
   private final JTextField modelField;
   private final JTextField licensePlateField;
   private final JSpinner   timeSpinner;
@@ -68,10 +70,11 @@ public class CreateCarParkingDialog extends BaseDialog {
     );
     timeSpinner.setEditor(timeEditor);
     timeSpinner.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent e) {
+      @Override public void stateChanged(ChangeEvent e) {
         Date selectedTime = (Date) timeSpinner.getValue();
-        LocalTime limitTime = selectedTime.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        LocalTime limitTime = selectedTime.toInstant()
+          .atZone(ZoneId.systemDefault())
+          .toLocalTime();
 
         // Obtém o horário atual
         LocalTime now = LocalTime.now();
@@ -79,11 +82,13 @@ public class CreateCarParkingDialog extends BaseDialog {
         // Calcula a diferença em horas, arredondando para cima se houver minutos adicionais
         long hoursDifference = Duration.between(now, limitTime).toHours();
         if (Duration.between(now, limitTime).toMinutes() % 60 != 0) {
-          hoursDifference += 1; // Arredonda para cima se houver minutos adicionais
+          hoursDifference
+            += 1; // Arredonda para cima se houver minutos adicionais
         }
 
         // Calcula o valor a pagar
-        double amountToPay = (hoursDifference >= 1) ? hoursDifference * hourlyRate : 0.0;
+        double amountToPay = (hoursDifference >= 1) ? hoursDifference *
+                                                      hourlyRate : 0.0;
 
         // Atualiza o texto do `amountLabel` com o valor calculado
         amountLabel.setText(String.format("R$%.2f", amountToPay));
@@ -144,11 +149,36 @@ public class CreateCarParkingDialog extends BaseDialog {
       String nome = modelField.getText();
       String placa = licensePlateField.getText();
       Date selectedTime = (Date) timeSpinner.getValue();
-      SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-      String formattedTime = timeFormat.format(selectedTime);
-      int hour = Integer.valueOf(formattedTime.substring(0, 2));
 
-      if (hour < LocalDateTime.now().getHour()) {
+      // Cria um Calendar para manipulação de horas e minutos
+      Calendar currentCalendar = Calendar.getInstance();
+      currentCalendar.setTime(new Date()); // Hora atual
+
+      // Cria outro Calendar para o horário selecionado no spinner
+      Calendar selectedCalendar = Calendar.getInstance();
+      selectedCalendar.setTime(new Date()); // Hora selecionada
+      selectedCalendar.set(Calendar.HOUR_OF_DAY, selectedTime.getHours());
+      selectedCalendar.set(Calendar.MINUTE, selectedTime.getMinutes());
+
+      int selectedHour = selectedCalendar.get(Calendar.HOUR_OF_DAY);
+      int selectedMinute = selectedCalendar.get(Calendar.MINUTE);
+
+      // Verifica se a diferença de minutos é menor que 30
+      long minutesDifference = (selectedCalendar.getTimeInMillis() - currentCalendar.getTimeInMillis()) / (60 * 1000); // Diferença em minutos
+      if (minutesDifference < 30) {
+        JOptionPane.showMessageDialog(
+          null,
+          "Mínimo 30 minutos, por favor! 😒",
+          "Error",
+          JOptionPane.ERROR_MESSAGE
+        );
+
+        amountLabel.setText(String.format("R$%.2f", 0f));
+        return;
+      }
+
+      if (selectedHour < currentCalendar.get(Calendar.HOUR_OF_DAY) ||
+          (selectedHour == currentCalendar.get(Calendar.HOUR_OF_DAY) && selectedMinute < currentCalendar.get(Calendar.MINUTE))) {
         JOptionPane.showMessageDialog(
           null,
           "Não é possível estacionar no passado 😊",
@@ -160,22 +190,22 @@ public class CreateCarParkingDialog extends BaseDialog {
         return;
       }
 
-      if (hour >= 22 || hour < 6) {
+      // Verifica se a hora está entre 6h e 22h
+      if (selectedHour < 6 || selectedHour >= 22) {
         JOptionPane.showMessageDialog(
           this,
-          "Horá deve ser entre 6 e 22",
+          "A hora deve ser entre 6h e 22h",
           "Error",
           JOptionPane.ERROR_MESSAGE
         );
         amountLabel.setText(String.format("R$%.2f", 0f));
+        confirmed = false;
         return;
       }
 
-      System.out.println("Nome: " + nome);
-      System.out.println("Placa: " + placa);
-      System.out.println("Horário Limite: " +
-                         formattedTime); // Exibe apenas a hora
-      System.out.println("Valor a Pagar: " + amountLabel.getText());
+      // Se passar todas as validações, a ação é confirmada
+      confirmed = true;
+      setVisible(false);
     });
 
     // Centraliza o diálogo na tela
