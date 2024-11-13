@@ -2,10 +2,7 @@ package project.poo.estacionamento.core.factories;
 
 import project.poo.estacionamento.core.interfaces.RepositoryCreatorAndDeleter;
 import project.poo.estacionamento.infra.database.DbConnection;
-import project.poo.estacionamento.infra.database.repositories.CarParkingRepository;
-import project.poo.estacionamento.infra.database.repositories.CarRepository;
-import project.poo.estacionamento.infra.database.repositories.PassageRepository;
-import project.poo.estacionamento.infra.database.repositories.UserRepository;
+import project.poo.estacionamento.infra.database.repositories.*;
 
 public class CreateTablesFactory {
   private static void createTable(RepositoryCreatorAndDeleter repository, boolean delete) {
@@ -33,5 +30,6 @@ public class CreateTablesFactory {
     createTable(new CarParkingRepository(), delete);
     createTable(new PassageRepository(), delete);
     createTable(new CarRepository(), delete);
+    createTable(new ParkingRepository(), delete);
   }
 }

@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class CreateCarParkingDialog extends BaseDialog {
-  public static boolean confirmed = false;
+  public static boolean    confirmed = false;
 
   private final JTextField modelField;
   private final JTextField licensePlateField;
@@ -132,6 +132,9 @@ public class CreateCarParkingDialog extends BaseDialog {
     add(licensePlatePanel, gbc);
 
     gbc.gridy++;
+    add(cpfPanel, gbc);
+
+    gbc.gridy++;
     add(imagePanel, gbc);
 
     gbc.gridy++;
@@ -156,8 +159,9 @@ public class CreateCarParkingDialog extends BaseDialog {
 
     closeButton.addActionListener(e -> dispose());
     confirmButton.addActionListener(e -> {
-      String nome = modelField.getText();
-      String placa = licensePlateField.getText();
+      String nome = modelField.getText().trim();
+      String placa = licensePlateField.getText().trim();
+      String cpf = cpfField.getText().trim();
       Date selectedTime = (Date) timeSpinner.getValue();
 
       // Cria um Calendar para manipulação de horas e minutos
@@ -214,7 +218,17 @@ public class CreateCarParkingDialog extends BaseDialog {
           JOptionPane.ERROR_MESSAGE
         );
         amountLabel.setText(String.format("R$%.2f", 0f));
-        confirmed = false;
+        return;
+      }
+
+      if (nome.isEmpty() || placa.length() != 7 || (cpf.length() != 11)) {
+        JOptionPane.showMessageDialog(
+          this,
+          "Preencha todos os campos!!! 👌",
+          "Error",
+          JOptionPane.ERROR_MESSAGE
+        );
+        dispose();
         return;
       }
 
@@ -222,9 +236,11 @@ public class CreateCarParkingDialog extends BaseDialog {
       button.props.personName = nome;
       button.props.licensePlate = placa;
       button.props.dateStarted = LocalDateTime.now();
-      button.props.dateEnded = selectedCalendar.toInstant()
-        .atZone(ZoneId.systemDefault())
-        .toLocalDateTime();
+      button.props.dateEnded
+        = LocalDateTime.ofInstant(
+        selectedCalendar.getTime().toInstant(),
+        selectedCalendar.getTimeZone().toZoneId()
+      );
       button.props.occupied = true;
       button.props.passwordToPay = UUID.randomUUID()
         .toString()
@@ -232,11 +248,13 @@ public class CreateCarParkingDialog extends BaseDialog {
         .toLowerCase();
       button.props.priceValue = amountToPay;
       button.setText("");
+      button.props.cpf = cpf;
       button.setHorizontalAlignment(SwingConstants.CENTER);
       button.setVerticalAlignment(SwingConstants.CENTER);
 
       button.setHorizontalTextPosition(SwingConstants.CENTER);
       button.setVerticalTextPosition(SwingConstants.CENTER);
+      button.setBackground(new Color(250, 125, 125));
 
       button.setIcon(new ImageIcon(getClass().getResource("/icons/hatchback.png")));
 
@@ -247,10 +265,10 @@ public class CreateCarParkingDialog extends BaseDialog {
         "\nO preço será de: " +
         amountToPay +
         "\nInício: " +
-        button.props.dateStarted.toString() +
+        button.props.getDateFormatted(button.props.dateStarted) +
         "\nFinal: " +
-        button.props.dateEnded.toString() +
-        "\nSua senha, usar no pagamento: " +
+        button.props.getDateFormatted(button.props.dateEnded) +
+        "\nSua senha, usar no pagamento: R$" +
         button.props.passwordToPay,
         "Estacionado",
         JOptionPane.INFORMATION_MESSAGE

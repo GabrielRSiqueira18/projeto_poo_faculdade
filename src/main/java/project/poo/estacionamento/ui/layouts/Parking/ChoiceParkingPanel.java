@@ -1,26 +1,24 @@
 package project.poo.estacionamento.ui.layouts.Parking;
 
+import project.poo.estacionamento.infra.database.models.ParkingModel;
 import project.poo.estacionamento.ui.layouts.Parking.components.CreateCarParkingDialog;
 import project.poo.estacionamento.ui.layouts.Parking.components.ParkingButton;
+import project.poo.estacionamento.ui.layouts.Parking.components.RemoveCarParkingDialog;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static project.poo.estacionamento.ui.layouts.Parking.components.CreateCarParkingDialog.confirmed;
+import static project.poo.estacionamento.Main.parkingsServices;
 
 public class ChoiceParkingPanel extends JPanel {
-  private JButton[][] parkingButtons;
-
   public ChoiceParkingPanel() {
     setLayout(new GridBagLayout());
     GridBagConstraints gbc = new GridBagConstraints();
     setBackground(Color.gray);
 
-    parkingButtons = new JButton[5][5];
-
-
+    ParkingModel[][] parkings = parkingsServices.findMany();
 
     for (int i = 0; i < 5; i++) {
       for (int j = 0; j < 5; j++) {
@@ -47,7 +45,29 @@ public class ChoiceParkingPanel extends JPanel {
 
         ParkingButton button = new ParkingButton(top, left, bottom, right);
         button.addActionListener(new ParkingButtonListener(button));
+        button.props.cpf = parkings[i][j].getCpf();
+        button.props.dateEnded = parkings[i][j].getDateEnded();
+        button.props.dateStarted = parkings[i][j].getDateStarted();
+        button.props.occupied = parkings[i][j].isOccupied();
+        button.props.priceValue = parkings[i][j].getPriceValue();
+        button.props.personName = parkings[i][j].getPersonName();
+        button.props.licensePlate = parkings[i][j].getLicensePlate();
 
+        if (button.props.occupied) {
+          button.setText("");
+          button.setHorizontalAlignment(SwingConstants.CENTER);
+          button.setVerticalAlignment(SwingConstants.CENTER);
+
+          button.setHorizontalTextPosition(SwingConstants.CENTER);
+          button.setVerticalTextPosition(SwingConstants.CENTER);
+          button.setBackground(new Color(250, 125, 125));
+
+          button.setIcon(new ImageIcon(getClass().getResource("/icons/hatchback.png")));
+        } else {
+          button.setBackground(Color.gray);
+          button.setText("Vaga: " + button.props.id);
+          button.setIcon(null);
+        }
 
         gbc.gridx = j;
         gbc.gridy = i;
@@ -57,12 +77,10 @@ public class ChoiceParkingPanel extends JPanel {
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
 
-
         int leftInset = 5;
         int rightInset = 5;
         gbc.insets = new Insets(0, leftInset, 0, rightInset);
 
-        parkingButtons[i][j] = button;
         add(button, gbc);
       }
     }
@@ -70,7 +88,6 @@ public class ChoiceParkingPanel extends JPanel {
 
   public static class ParkingButtonListener implements ActionListener {
     private final ParkingButton button;
-    private boolean isOccupied = false;
 
     public ParkingButtonListener(ParkingButton button) {
       this.button = button;
@@ -83,8 +100,12 @@ public class ChoiceParkingPanel extends JPanel {
         new CreateCarParkingDialog(button).setVisible(true);
 
       } else {
-        button.setBackground(Color.RED);
-        button.setText("Disponível");
+        new RemoveCarParkingDialog(button).setVisible(true);
+        button.setBackground(Color.gray);
+        button.setText("Vaga: " + button.props.id);
+        button.setIcon(null);
+        button.props.occupied = false;
+
       }
     }
   }

@@ -4,11 +4,9 @@ import project.poo.estacionamento.core.Repositories;
 import project.poo.estacionamento.infra.database.DbConnection;
 import project.poo.estacionamento.core.factories.CreateRepositoriesFactory;
 import project.poo.estacionamento.core.factories.CreateTablesFactory;
+import project.poo.estacionamento.infra.database.seeds.ParkingSeed;
 import project.poo.estacionamento.infra.database.seeds.UserSeed;
-import project.poo.estacionamento.infra.services.CarParkingServices;
-import project.poo.estacionamento.infra.services.CarServices;
-import project.poo.estacionamento.infra.services.PassageServices;
-import project.poo.estacionamento.infra.services.UserServices;
+import project.poo.estacionamento.infra.services.*;
 import project.poo.estacionamento.ui.LoginPage;
 
 public class Main {
@@ -19,13 +17,17 @@ public class Main {
   public static CarServices carServices = new CarServices(repositories.getCarRepository());
   public static PassageServices passageServices = new PassageServices(repositories.getPassageRepository(), repositories.getCarRepository());
   public static CarParkingServices carParkingServices = new CarParkingServices(repositories.getCarParkingRepository(), repositories.getCarRepository());
+  public static ParkingsServices   parkingsServices = new ParkingsServices(repositories.getParkingRepository());
 
   public static void main(String[] args) {
     boolean deleteDb = true;
     DbConnection.connect();
 
     CreateTablesFactory.make(deleteDb);
-    if (deleteDb) UserSeed.seed();
+    if (deleteDb) {
+      UserSeed.seed();
+      ParkingSeed.seed();
+    }
 
     new LoginPage();
 

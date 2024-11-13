@@ -13,8 +13,6 @@ public class LoginPage extends JFrame {
   private JPanel loginPanel;
   private JTextField loginEmail;
   private JLabel logo;
-  private JLabel loginTitle;
-  private JPanel formContainer;
 
   public LoginPage() {
     JFrame frame = new JFrame("Login");
