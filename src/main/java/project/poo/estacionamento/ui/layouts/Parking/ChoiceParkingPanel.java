@@ -69,17 +69,17 @@ public class ChoiceParkingPanel extends JPanel {
   }
 
   public static class ParkingButtonListener implements ActionListener {
-    private final JButton button;
+    private final ParkingButton button;
     private boolean isOccupied = false;
 
-    public ParkingButtonListener(JButton button) {
+    public ParkingButtonListener(ParkingButton button) {
       this.button = button;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-      if (!isOccupied) {
+      if (!button.props.occupied) {
         new CreateCarParkingDialog(button).setVisible(true);
 
       } else {

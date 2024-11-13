@@ -2,9 +2,10 @@ package project.poo.estacionamento.infra.database.models;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 public class CarParkingModel {
-  private final Integer       id;
+  private final Integer          id;
   private final Integer       idCar;
   private final float         priceValue;
   private final float         interest;

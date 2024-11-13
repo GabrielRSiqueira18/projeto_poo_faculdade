@@ -4,24 +4,26 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 public class CreateCarParkingDialog extends BaseDialog {
   public static boolean confirmed = false;
 
   private final JTextField modelField;
   private final JTextField licensePlateField;
+  private final JTextField cpfField;
   private final JSpinner   timeSpinner;
   private final JLabel     amountLabel;
   private final double     hourlyRate = 10.0; // Valor por hora
+  double amountToPay = 0f;
 
-  public CreateCarParkingDialog(JButton button) {
+  public CreateCarParkingDialog(ParkingButton button) {
     super();
 
     // Define o layout principal como GridBagLayout para centralização
@@ -43,6 +45,13 @@ public class CreateCarParkingDialog extends BaseDialog {
     licensePlateField = new JTextField(10);
     licensePlatePanel.add(licensePlateLabel);
     licensePlatePanel.add(licensePlateField);
+
+    // Painel para o campo "CPF"
+    JPanel cpfPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JLabel cpfLabel = new JLabel("CPF:");
+    cpfField = new JTextField(10);
+    cpfPanel.add(cpfLabel);
+    cpfPanel.add(cpfField);
 
     // Painel para o botão de upload de imagem
     JPanel imagePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -87,8 +96,9 @@ public class CreateCarParkingDialog extends BaseDialog {
         }
 
         // Calcula o valor a pagar
-        double amountToPay = (hoursDifference >= 1) ? hoursDifference *
-                                                      hourlyRate : 0.0;
+        amountToPay = (hoursDifference >= 1)
+          ? hoursDifference * hourlyRate
+          : 0.0;
 
         // Atualiza o texto do `amountLabel` com o valor calculado
         amountLabel.setText(String.format("R$%.2f", amountToPay));
@@ -164,7 +174,10 @@ public class CreateCarParkingDialog extends BaseDialog {
       int selectedMinute = selectedCalendar.get(Calendar.MINUTE);
 
       // Verifica se a diferença de minutos é menor que 30
-      long minutesDifference = (selectedCalendar.getTimeInMillis() - currentCalendar.getTimeInMillis()) / (60 * 1000); // Diferença em minutos
+      long minutesDifference = (
+                                 selectedCalendar.getTimeInMillis() -
+                                 currentCalendar.getTimeInMillis()
+                               ) / (60 * 1000); // Diferença em minutos
       if (minutesDifference < 30) {
         JOptionPane.showMessageDialog(
           null,
@@ -177,10 +190,12 @@ public class CreateCarParkingDialog extends BaseDialog {
         return;
       }
 
-      if (selectedHour < currentCalendar.get(Calendar.HOUR_OF_DAY) ||
-          (selectedHour == currentCalendar.get(Calendar.HOUR_OF_DAY) && selectedMinute < currentCalendar.get(Calendar.MINUTE))) {
+      if (selectedHour < currentCalendar.get(Calendar.HOUR_OF_DAY) || (
+        selectedHour == currentCalendar.get(Calendar.HOUR_OF_DAY) &&
+        selectedMinute < currentCalendar.get(Calendar.MINUTE)
+      )) {
         JOptionPane.showMessageDialog(
-          null,
+          this,
           "Não é possível estacionar no passado 😊",
           "Error",
           JOptionPane.ERROR_MESSAGE
@@ -204,9 +219,43 @@ public class CreateCarParkingDialog extends BaseDialog {
       }
 
       // Se passar todas as validações, a ação é confirmada
-      button.setBackground(Color.GREEN);
+      button.props.personName = nome;
+      button.props.licensePlate = placa;
+      button.props.dateStarted = LocalDateTime.now();
+      button.props.dateEnded = selectedCalendar.toInstant()
+        .atZone(ZoneId.systemDefault())
+        .toLocalDateTime();
+      button.props.occupied = true;
+      button.props.passwordToPay = UUID.randomUUID()
+        .toString()
+        .substring(0, 4)
+        .toLowerCase();
+      button.props.priceValue = amountToPay;
+      button.setText("");
+      button.setHorizontalAlignment(SwingConstants.CENTER);
+      button.setVerticalAlignment(SwingConstants.CENTER);
 
-      setVisible(false);
+      button.setHorizontalTextPosition(SwingConstants.CENTER);
+      button.setVerticalTextPosition(SwingConstants.CENTER);
+
+      button.setIcon(new ImageIcon(getClass().getResource("/icons/hatchback.png")));
+
+      dispose();
+      JOptionPane.showMessageDialog(
+        this,
+        "Parabéns estacionou o carro!!" +
+        "\nO preço será de: " +
+        amountToPay +
+        "\nInício: " +
+        button.props.dateStarted.toString() +
+        "\nFinal: " +
+        button.props.dateEnded.toString() +
+        "\nSua senha, usar no pagamento: " +
+        button.props.passwordToPay,
+        "Estacionado",
+        JOptionPane.INFORMATION_MESSAGE
+      );
+
     });
 
     // Centraliza o diálogo na tela
