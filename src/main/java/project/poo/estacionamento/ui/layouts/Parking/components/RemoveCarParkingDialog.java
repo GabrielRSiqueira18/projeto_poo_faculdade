@@ -15,6 +15,7 @@ import java.util.Map;
 public class RemoveCarParkingDialog extends BaseDialog {
   private final JTextField passwordField;
   private final JTextField cpfField;
+  private final JButton okButton;
 
   public RemoveCarParkingDialog(ParkingButton button) {
     super();
@@ -41,6 +42,7 @@ public class RemoveCarParkingDialog extends BaseDialog {
     // Adiciona os painéis de senha e CPF ao layout principal com o uso de gbc
     gbc.gridx = 0;
     gbc.gridy = 0;
+    gbc.gridwidth = 2;
     add(passwordPanel, gbc);
 
     gbc.gridy = 1;
@@ -56,12 +58,35 @@ public class RemoveCarParkingDialog extends BaseDialog {
       JOptionPane.showMessageDialog(this, "Erro ao gerar QR Code.", "Erro", JOptionPane.ERROR_MESSAGE);
     }
 
-    // Adiciona o QR Code Label usando GridBagConstraints
     gbc.gridy = 2;
-    gbc.gridwidth = 2;
     add(qrCodeLabel, gbc);
-  }
 
+    // Botão centralizado abaixo do QR Code
+    okButton = new JButton("Pagar");
+    gbc.gridy = 3;
+    gbc.gridwidth = 1; // Reseta o gridwidth para evitar sobreposição
+    gbc.anchor = GridBagConstraints.CENTER;
+    add(okButton, gbc);
+
+    // Ação do botão
+    okButton.addActionListener(e -> {
+      String enteredCPF = cpfField.getText().trim();
+      String enteredPassword = passwordField.getText().trim();
+
+      if (!button.props.cpf.equals(enteredCPF) || !button.props.passwordToPay.equals(enteredPassword)) {
+        JOptionPane.showMessageDialog(this, "CPF ou senha inválidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+
+      JOptionPane.showMessageDialog(this, "Pagamento realizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+      button.setBackground(Color.gray);
+      button.setText("Vaga: " + button.props.id);
+      button.setIcon(null);
+      button.reset();
+      dispose();
+
+    });
+  }
 
   private static BufferedImage generateQRCodeImage(String text, int width, int height) {
     QRCodeWriter qrCodeWriter = new QRCodeWriter();

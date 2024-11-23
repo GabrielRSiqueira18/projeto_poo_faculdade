@@ -3,16 +3,12 @@ package project.poo.estacionamento.infra.database.repositories;
 import project.poo.estacionamento.core.interfaces.RepositoryCreatorAndDeleter;
 import project.poo.estacionamento.infra.database.DbConnection;
 import project.poo.estacionamento.infra.database.factories.CreateParkingModelFactory;
-import project.poo.estacionamento.infra.database.factories.CreatePassageModelFactory;
 import project.poo.estacionamento.infra.database.models.ParkingModel;
-import project.poo.estacionamento.infra.database.models.PassageModel;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ParkingRepository extends DbConnection implements RepositoryCreatorAndDeleter {
   public boolean initialize() {

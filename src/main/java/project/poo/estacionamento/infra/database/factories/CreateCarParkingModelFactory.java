@@ -14,7 +14,7 @@ public class CreateCarParkingModelFactory {
         rs.getInt("id_car"),
         rs.getFloat("price_value"),
         rs.getFloat("interest"),
-        ZonedDateTime.parse(rs.getString("start_entry_time")),
+        rs.getString("start_entry_time") != null ? ZonedDateTime.parse(rs.getString("start_entry_time")) : null,
         rs.getString("end_entry_time") != null ? ZonedDateTime.parse(rs.getString("end_entry_time")) : null
       );
     } catch (SQLException e) {

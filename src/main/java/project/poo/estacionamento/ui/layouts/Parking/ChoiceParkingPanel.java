@@ -43,7 +43,9 @@ public class ChoiceParkingPanel extends JPanel {
           top = 0;
         }
 
+        System.out.println(i + " " + j);
         ParkingButton button = new ParkingButton(top, left, bottom, right);
+        System.out.println(parkings[i][j].getI() + " " + parkings[i][j].getJ());
         button.addActionListener(new ParkingButtonListener(button));
         button.props.cpf = parkings[i][j].getCpf();
         button.props.dateEnded = parkings[i][j].getDateEnded();
@@ -101,10 +103,7 @@ public class ChoiceParkingPanel extends JPanel {
 
       } else {
         new RemoveCarParkingDialog(button).setVisible(true);
-        button.setBackground(Color.gray);
-        button.setText("Vaga: " + button.props.id);
-        button.setIcon(null);
-        button.props.occupied = false;
+
 
       }
     }

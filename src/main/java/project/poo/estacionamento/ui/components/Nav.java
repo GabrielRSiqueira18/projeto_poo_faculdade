@@ -65,47 +65,6 @@ public class Nav extends JPanel {
     add(carsParkedLabel);
     add(Box.createVerticalStrut(20));
 
-    registerCarButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-    viewCarButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-    updateCarButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-    removeCarButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-    fineCarButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-    viewFinedCarsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-    registerCarButton.setFocusPainted(false);
-    viewCarButton.setFocusPainted(false);
-    updateCarButton.setFocusPainted(false);
-    removeCarButton.setFocusPainted(false);
-    fineCarButton.setFocusPainted(false);
-    viewFinedCarsButton.setFocusPainted(false);
-
-    add(registerCarButton);
-    add(Box.createVerticalStrut(10));
-    add(viewCarButton);
-    add(Box.createVerticalStrut(10));
-    add(updateCarButton);
-    add(Box.createVerticalStrut(10));
-    add(removeCarButton);
-    add(Box.createVerticalStrut(10));
-    add(fineCarButton);
-    add(Box.createVerticalStrut(10));
-    add(viewFinedCarsButton);
-
-    registerCarButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    viewCarButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    updateCarButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    removeCarButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    fineCarButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    viewFinedCarsButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-    // TODO: background
-    registerCarButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    viewCarButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    updateCarButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    removeCarButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    fineCarButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    viewFinedCarsButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
     updateDateNowText();
     updateCarsText();
     updateCarsParkedText();

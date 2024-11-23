@@ -262,13 +262,13 @@ public class CreateCarParkingDialog extends BaseDialog {
       JOptionPane.showMessageDialog(
         this,
         "Parabéns estacionou o carro!!" +
-        "\nO preço será de: " +
+        "\nO preço será de: R$" +
         amountToPay +
         "\nInício: " +
         button.props.getDateFormatted(button.props.dateStarted) +
         "\nFinal: " +
         button.props.getDateFormatted(button.props.dateEnded) +
-        "\nSua senha, usar no pagamento: R$" +
+        "\nSua senha, usar no pagamento: " +
         button.props.passwordToPay,
         "Estacionado",
         JOptionPane.INFORMATION_MESSAGE

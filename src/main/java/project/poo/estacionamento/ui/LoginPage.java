@@ -12,6 +12,8 @@ public class LoginPage extends JFrame {
   private JButton submit;
   private JPanel loginPanel;
   private JTextField loginEmail;
+  private JLabel loginTitle;
+  private JPanel formContainer;
   private JLabel logo;
 
   public LoginPage() {

@@ -48,5 +48,18 @@ public class ParkingButton extends JButton {
     setFocusPainted(false);
     setPreferredSize(new Dimension(getWidth(), 50));
   }
+
+  public void reset() {
+    props.id = null;
+    props.personName = null;
+    props.licensePlate = null;
+    props.cpf = null;
+    props.dateStarted = null;
+    props.dateEnded = null;
+    props.occupied = false;
+    props.passwordToPay = null;
+    props.priceValue = 0.0;
+
+  }
 }
 
